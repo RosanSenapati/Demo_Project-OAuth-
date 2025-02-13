@@ -12,10 +12,10 @@ export default function LoginSignUp() {
     event.preventDefault();
     console.log(email,password);
     try {
-     const res = await axios.post("http://localhost:8081/login", {
+     const res = await axios.post("http://localhost:8081/login",{
       email: email,
       password:password,
-      });
+      },{withCredentials:false});
       console.log(res);
       console.log(res.data);
 
@@ -47,7 +47,9 @@ export default function LoginSignUp() {
         <input type="submit" value="Login" />
       </div>
       <div className="signup-link">Not a member? <Link to="/signup">Signup now</Link></div>
-      <div className="signup-link"><Link to="http://localhost:8081/oauth2/authorization/google">Login With Google</Link></div>
+      <div className="signup-link"><button  className="btn btn-primary" onClick={()=>{
+        window.location.href = "http://localhost:8081/oauth2/authorization/google";
+      }}>Login With Google</button></div>
     </form>
     <ToastContainer/>
   </div>

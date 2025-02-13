@@ -47,6 +47,8 @@ function SignupPage() {
             name: values.fullName,
             email: values.email,
             password: values.confirmPassword,
+            },{
+              withCredentials:false
             });
 
             console.log(res);

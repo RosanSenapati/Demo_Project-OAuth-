@@ -71,7 +71,7 @@ form .row input:focus {
 }
 
 form .row input::placeholder {
-  color: #999;
+  color: navy;
 }
 
 .wrapper form .row i {
