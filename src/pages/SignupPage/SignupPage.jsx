@@ -1,5 +1,6 @@
 import React from 'react';
-import './SignUpPage.css';
+// import './SignUpPage.css';
+import '../../index.css'
 import { Link, useNavigate } from 'react-router-dom';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
@@ -61,7 +62,7 @@ function SignupPage() {
               // toast.success('User Registration Successfully');
             
           } catch (err) {
-            toast.error('Something Went Wrong!!!!');
+            toast.warning('User Exists !!! Please Login.');
             console.log(err);
           }
         }
@@ -103,7 +104,7 @@ function SignupPage() {
           </Form>
         )}
       </Formik>
-      {/* <ToastContainer
+      <ToastContainer
 position="top-right"
 autoClose={5000}
 hideProgressBar={false}
@@ -114,7 +115,7 @@ pauseOnFocusLoss
 draggable
 pauseOnHover
 theme="light"
-/> */}
+/>
     </div>
   );
 }

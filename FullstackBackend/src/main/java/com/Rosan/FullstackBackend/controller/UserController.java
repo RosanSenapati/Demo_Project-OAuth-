@@ -1,7 +1,6 @@
 package com.Rosan.FullstackBackend.controller;
 
 
-import com.Rosan.FullstackBackend.exception.UserNotFoundException;
 import com.Rosan.FullstackBackend.model.User;
 import com.Rosan.FullstackBackend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +17,7 @@ public class UserController {
     private UserRepository userRepository;
 
 
-
+    //Register User
     @PostMapping("/user")
     User newUser(@RequestBody User newUser){
 
@@ -30,11 +29,6 @@ public class UserController {
         return userRepository.findAll();
     }
 
-    @GetMapping("/user/{id}")
-    User getUserById(@PathVariable Long id){
-        return userRepository.findById(id)
-         .orElseThrow(()->new UserNotFoundException(id));
-    }
 
     // User Login
     @PostMapping("/login")

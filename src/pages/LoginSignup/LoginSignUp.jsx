@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import './LoginSignUp.css'
+// import './LoginSignUp.css'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
@@ -47,9 +47,9 @@ export default function LoginSignUp() {
         <input type="submit" value="Login" />
       </div>
       <div className="signup-link">Not a member? <Link to="/signup">Signup now</Link></div>
-      <div className="signup-link"><button  className="btn btn-primary" onClick={()=>{
+      <div className="signup-link"><button  className="btn text-white" style={{backgroundColor:"navy"}} onClick={()=>{
         window.location.href = "http://localhost:8081/oauth2/authorization/google";
-      }}>Login With Google</button></div>
+      }}>Login With Google <i class="bi bi-google"></i></button></div>
     </form>
     <ToastContainer/>
   </div>

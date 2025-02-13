@@ -31,7 +31,7 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(registry -> {
-                    registry.requestMatchers("/user", "/login", "/oauth2/**").permitAll(); //Public Route
+                    registry.requestMatchers("/user", "/login", "/oauth2/**,").permitAll(); //Public Route
                     registry.requestMatchers("/users").authenticated(); //Private Authenticated Routes
                     registry.anyRequest().authenticated(); // Protect other routes
                 })
@@ -66,7 +66,7 @@ public class SecurityConfig {
             // Redirect Home Url
             String redirectUrl = "http://localhost:5173/home/" + username;
 
-            response.sendRedirect(redirectUrl); // ✅ Redirect to React frontend
+            response.sendRedirect(redirectUrl); // Redirect to Home Page
         };
     }
 
@@ -76,7 +76,7 @@ public class SecurityConfig {
         random.nextBytes(bytes);
         return Base64.getEncoder().encodeToString(bytes);
     }
-
+    //For Cors Error
     @Bean
     public CorsFilter corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
