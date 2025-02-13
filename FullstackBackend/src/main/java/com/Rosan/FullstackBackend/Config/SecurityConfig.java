@@ -1,5 +1,8 @@
 package com.Rosan.FullstackBackend.Config;
 
+import com.Rosan.FullstackBackend.model.User;
+import com.Rosan.FullstackBackend.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -11,10 +14,16 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
+import java.security.SecureRandom;
+import java.util.Base64;
 import java.util.List;
+import java.util.Optional;
 
 @Configuration
 public class SecurityConfig {
+    @Autowired
+    private UserRepository userRepository;
+
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -36,14 +45,36 @@ public class SecurityConfig {
     public AuthenticationSuccessHandler customSuccessHandler() {
         return (request, response, authentication) -> {
             OAuth2User oauthUser = (OAuth2User) authentication.getPrincipal();
-//          System.out.println(oauthUser);
-            String username = oauthUser.getAttribute("name");// ✅ Get user attribute (Change as needed)
+          System.out.println(oauthUser);
+            String username = oauthUser.getAttribute("name");
+            String email = oauthUser.getAttribute("email");
 
-            // Generate dynamic redirect URL
+            // Generate a random password
+            String randomPassword = generateRandomPassword();
+
+            // Check if user already exists
+            Optional<User> existingUser = userRepository.findByEmail(email);
+            if (existingUser.isEmpty()) {
+                // Create new user and save
+                User user = new User();
+                user.setName(username);
+                user.setEmail(email);
+                user.setPassword(randomPassword);
+                userRepository.save(user);
+            }// Get user attribute (Change as needed)
+
+            // Redirect Home Url
             String redirectUrl = "http://localhost:5173/home/" + username;
 
             response.sendRedirect(redirectUrl); // ✅ Redirect to React frontend
         };
+    }
+
+    private String generateRandomPassword() {
+        SecureRandom random = new SecureRandom();
+        byte[] bytes = new byte[16]; // 16-byte random password
+        random.nextBytes(bytes);
+        return Base64.getEncoder().encodeToString(bytes);
     }
 
     @Bean
