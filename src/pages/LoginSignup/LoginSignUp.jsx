@@ -1,10 +1,12 @@
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 // import './LoginSignUp.css'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import {toast,ToastContainer } from 'react-toastify'
+import { AuthContext } from '../../App'
 export default function LoginSignUp() {
+  const {setIsLogin } = useContext(AuthContext)
   const navigate = useNavigate();
   const [email,setEmail ] = useState("");
   const [password,setPassword] = useState("");
@@ -18,9 +20,11 @@ export default function LoginSignUp() {
       },{withCredentials:false});
       console.log(res);
       console.log(res.data);
+      if(res.data){
 
-      // res.data ?toast.success('Logged in successfully') : toast.error('invalid Credentials');
-      res.data ?navigate(`/home/${res.data.name}`) : toast.error('invalid Credentials');
+        setIsLogin((prev) => !prev);
+        navigate(`/home/${res.data.name}`) 
+      }
       // navigate('/signup');
     } catch (err) {
       alert(err);
