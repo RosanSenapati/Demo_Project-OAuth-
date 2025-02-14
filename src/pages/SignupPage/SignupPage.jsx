@@ -66,7 +66,7 @@ function SignupPage() {
             // toast.success('User Registration Successfully');
           } catch (err) {
             console.log(err.response.data.message);
-            toast.error(err.response.data.message);
+            toast.warning(err.response.data.message);
             console.log(err);
           }
         }}

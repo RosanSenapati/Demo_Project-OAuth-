@@ -1,15 +1,24 @@
-import React, { createContext, useState } from 'react'
+import React, { createContext, useState, useEffect } from 'react';
 
 const AuthContext = createContext();
-function AuthContextProvider({children}) {
-    const [isLogin,setIsLogin] = useState(false);
-    return (
-      <>
-    <AuthContext.Provider value={{isLogin,setIsLogin}}>
-    {children}
+
+function AuthContextProvider({ children }) {
+  const [isLogin, setIsLogin] = useState(() => {
+    // Check if the login state exists in localStorage
+    const storedLoginState = localStorage.getItem('isLogin');
+    return storedLoginState === 'true'; // Return true or false based on localStorage value
+  });
+
+  useEffect(() => {
+    // Store the login state in localStorage whenever it changes
+    localStorage.setItem('isLogin', isLogin);
+  }, [isLogin]);
+
+  return (
+    <AuthContext.Provider value={{ isLogin, setIsLogin }}>
+      {children}
     </AuthContext.Provider>
-    </>
-  )
+  );
 }
 
-export {AuthContext,AuthContextProvider}
+export { AuthContext, AuthContextProvider };

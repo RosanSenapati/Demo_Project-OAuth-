@@ -130,3 +130,24 @@ form .signup-link a:hover {
   color: red;
   font: 30px;
 }
+.logout-btn {
+  background-color: #dc3545; /* Red color for logout */
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 4px;
+}
+
+.logout-btn:hover {
+  background-color: #c82333; /* Darker red on hover */
+}
+
+.logout-btn:focus {
+  outline: none;
+}
+
+.logout-container {
+  margin-top: 20px;
+}
