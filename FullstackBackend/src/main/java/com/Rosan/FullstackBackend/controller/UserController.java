@@ -1,46 +1,49 @@
 package com.Rosan.FullstackBackend.controller;
 
-
+import com.Rosan.FullstackBackend.DTO.UserDTO;
 import com.Rosan.FullstackBackend.model.User;
-import com.Rosan.FullstackBackend.repository.UserRepository;
+import com.Rosan.FullstackBackend.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:5173")
 public class UserController {
 
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
 
-
-    //Register User
+    // Create New User (Signup)
     @PostMapping("/user")
-    User newUser(@RequestBody User newUser){
-
-        return userRepository.save(newUser);
+    public ResponseEntity<UserDTO> newUser(@RequestBody User user) {
+        UserDTO savedUser = userService.createUser(user);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedUser);
     }
 
+    // Get All Users
     @GetMapping("/users")
-    List<User> getAllUsers (){
-        return userRepository.findAll();
+    public ResponseEntity<List<UserDTO>> getAllUsers() {
+        return ResponseEntity.ok(userService.getAllUsers());
     }
 
+    // Get User by ID
+    @GetMapping("/user/{id}")
+    public ResponseEntity<UserDTO> getUserById(@PathVariable Long id) {
+        return ResponseEntity.ok(userService.getUserById(id));
+    }
 
     // User Login
     @PostMapping("/login")
-    public User loginUser(@RequestBody User user) {
-        Optional<User> existingUser = userRepository.findByEmail(user.getEmail());
-
-        if (existingUser.isPresent() && existingUser.get().getPassword().equals(user.getPassword())) {
-            return existingUser.get();  // Successful login
-//            return true;
-        } else {
-            return null;
+    public ResponseEntity<?> loginUser(@RequestBody User user) {
+        try {
+            UserDTO loggedInUser = userService.loginUser(user.getEmail(), user.getPassword());
+            return ResponseEntity.ok(loggedInUser);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email or password");
         }
     }
-
 }

@@ -1,12 +1,10 @@
-import React, { useContext, useEffect, useState } from 'react'
-// import './LoginSignUp.css'
+import React, { useState } from 'react'
+import './LoginSignUp.css'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import {toast,ToastContainer } from 'react-toastify'
-import { AuthContext } from '../../App'
 export default function LoginSignUp() {
-  const {setIsLogin } = useContext(AuthContext)
   const navigate = useNavigate();
   const [email,setEmail ] = useState("");
   const [password,setPassword] = useState("");
@@ -20,11 +18,9 @@ export default function LoginSignUp() {
       },{withCredentials:false});
       console.log(res);
       console.log(res.data);
-      if(res.data){
 
-        setIsLogin((prev) => !prev);
-        navigate(`/home/${res.data.name}`) 
-      }
+      // res.data ?toast.success('Logged in successfully') : toast.error('invalid Credentials');
+      res.data ?navigate(`/home/${res.data.name}`) : toast.error('invalid Credentials');
       // navigate('/signup');
     } catch (err) {
       alert(err);
@@ -51,9 +47,9 @@ export default function LoginSignUp() {
         <input type="submit" value="Login" />
       </div>
       <div className="signup-link">Not a member? <Link to="/signup">Signup now</Link></div>
-      <div className="signup-link"><button  className="btn text-white" style={{backgroundColor:"navy"}} onClick={()=>{
+      <div className="signup-link"><button  className="btn btn-primary" onClick={()=>{
         window.location.href = "http://localhost:8081/oauth2/authorization/google";
-      }}>Login With Google <i class="bi bi-google"></i></button></div>
+      }}>Login With Google</button></div>
     </form>
     <ToastContainer/>
   </div>
